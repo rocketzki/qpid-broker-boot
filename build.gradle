@@ -1,0 +1,57 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+}
+
+group = 'com.rocketzki'
+version = '1.0.0-SNAPSHOT'
+
+//LIB VERSIONS
+def qpidVersion = '8.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+springBoot {
+    mainClass.set('com.rocketzki.broker.QpidBrokerBootAppKt')
+}
+
+
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    compile "org.springframework:spring-jms:5.3.1"
+    compile "org.apache.qpid:qpid-jms-client:0.54.0"
+    compile "org.apache.qpid:qpid-broker-core:${qpidVersion}"
+    compile "org.apache.qpid:qpid-broker-plugins-management-http:${qpidVersion}"
+    compile "org.apache.qpid:qpid-broker-plugins-derby-store:${qpidVersion}"
+    compile "org.apache.qpid:qpid-broker-plugins-memory-store:${qpidVersion}"
+    compile "org.apache.qpid:qpid-broker-plugins-management-amqp:${qpidVersion}"
+    compile "org.apache.qpid:qpid-broker-plugins-amqp-1-0-protocol:${qpidVersion}"
+    compile "org.apache.qpid:qpid-broker-plugins-logging-logback:${qpidVersion}"
+    compileOnly "org.projectlombok:lombok"
+
+    implementation "org.springframework.boot:spring-boot-starter-integration"
+    implementation "org.jetbrains.kotlin:kotlin-script-runtime:1.4.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.projectlombok:lombok"
+}
+
+project.properties.put('spring.boot.mainclass', 'com.rocketzki.broker.QpidBrokerBootAppKt')
+
+

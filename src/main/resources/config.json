@@ -1,0 +1,95 @@
+{
+  "name": "TEST_BROKER",
+  "modelVersion": "8.0",
+  "authenticationproviders": [
+    {
+      "name": "plain",
+      "type": "Plain",
+      "users": [
+        {
+          "name": "theUser",
+          "type": "managed",
+          "password": "theP@55"
+        }
+      ]
+    }
+  ],
+  "brokerloggers": [
+    {
+      "name": "memory",
+      "type": "Memory",
+      "brokerloginclusionrules": [
+        {
+          "name": "Root",
+          "type": "NameAndLevel",
+          "level": "WARN",
+          "loggerName": "ROOT"
+        },
+        {
+          "name": "Qpid",
+          "type": "NameAndLevel",
+          "level": "WARN",
+          "loggerName": "org.apache.qpid.*"
+        },
+        {
+          "name": "Operational",
+          "type": "NameAndLevel",
+          "level": "DEBUG",
+          "loggerName": "qpid.message.*"
+        },
+        {
+          "name": "Statistics",
+          "type": "NameAndLevel",
+          "level": "DEBUG",
+          "loggerName": "qpid.statistics.*"
+        }
+      ]
+    }
+  ],
+  "ports": [
+    {
+      "name": "AMQP",
+      "port": "${qpid.amqp_port}",
+      "bindingAddress": "127.0.0.1",
+      "authenticationProvider": "plain",
+      "virtualhostaliases": [
+        {
+          "name": "nameAlias",
+          "type": "nameAlias"
+        },
+        {
+          "name": "defaultAlias",
+          "type": "defaultAlias"
+        },
+        {
+          "name": "hostnameAlias",
+          "type": "hostnameAlias"
+        }
+      ]
+    },
+    {
+      "name": "HTTP",
+      "port": "${qpid.http_port}",
+      "bindingAddress": "127.0.0.1",
+      "authenticationProvider": "plain",
+      "protocols": [
+        "HTTP"
+      ]
+    }
+  ],
+  "virtualhostnodes": [
+    {
+      "name": "standard_node",
+      "type": "Memory",
+      "defaultVirtualHostNode": "true",
+      "virtualHostInitialConfiguration": "{\"type\":\"DERBY\",\"nodeAutoCreationPolicies\":[{\"pattern\":\".*\",\"createdOnPublish\":\"true\",\"createdOnConsume\":\"true\",\"nodeType\":\"queue\",\"attributes\":{}}]}"
+    }
+  ],
+  "plugins": [
+    {
+      "type": "MANAGEMENT-HTTP",
+      "name": "httpManagement",
+      "httpBasicAuthenticationEnabled": "true"
+    }
+  ]
+}

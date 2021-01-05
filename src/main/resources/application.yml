@@ -1,0 +1,4 @@
+qpid-broker-boot:
+  http-port: 8080
+  amqp-port: 5672
+
